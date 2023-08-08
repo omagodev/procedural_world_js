@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="seed.js"></script>
+    <title>Geração Procedural - Galaxia</title>
+    <script type="text/javascript">
+      const xMax = 28;
+      const yMax = 28;
+      const d = 0.5;
+
+      const minPlanets = 5;
+      const maxPlanets = 20;
+
+      function clearCanvas(ctx) {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      }
+
+      function init() {
+        var c = document.getElementById("canvas");
+
+        var ctx = c.getContext("2d");
+        clearCanvas(ctx);
+        var rdnV = document.getElementById("seed").value;
+        var estrelas = createStars(rdnV, ctx);
+        var planetas = createPlanets(rdnV, ctx);
+      }
+
+      function createStars(v, ctx) {
+        var g = new Array(xMax + 1);
+        for (var i = 0; i < xMax + 1; i++) {
+          g[i] = new Array(yMax + 1);
+        }
+        Math.seedrandom(v);
+
+        for (var x = 0; x < xMax; x++) {
+          for (var y = 0; y < yMax; y++) {
+            if (Math.random() < d) {
+              g[x][y] = Math.random();
+              var brightness = 255 * g[x][y];
+              ctx.fillStyle = `rgb(${brightness}, ${brightness}, ${brightness})`;
+              ctx.fillRect(x * 30, y * 30, 5, 5);
+            } else {
+              g[x][y] = 0;
+            }
+          }
+        }
+        return g;
+      }
+
+      function createPlanets(v, ctx) {
+        Math.seedrandom(v);
+        var p = getRandomInt(minPlanets, maxPlanets);
+        var P = new Array(p);
+        for (var i = 0; i < p; i++) {
+          P[i] = Array(
+            Math.random() * 10 + 5,
+            Math.random() * 800,
+            Math.random() * 800
+          );
+
+          if (i > 1) {
+            while (checkCollisions(P, P[i], i)) {
+              P[i] = Array(
+                Math.random() * 10 + 5,
+                Math.random() * 800,
+                Math.random() * 800
+              );
+            }
+          }
+
+          ctx.fillStyle = "#AAAAAA";
+          ctx.beginPath();
+          ctx.arc(P[i][1], P[i][2], P[i][0], 0, 2 * Math.PI);
+          ctx.fill();
+        }
+        return P;
+      }
+
+      /**
+       * Pegamos um random de ponto flutuante (float) entre um `min` and `max`.
+       *
+       * @param {number} min - menor numero desejado
+       * @param {number} max - maior numero desejado
+       * @return {float} valor randomico de ponto flutuante devolvido
+       */
+      function getRandom(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      /**
+       * Pegamos um random inteiro entre um `min` and `max`.
+       *
+       * @param {number} min - menor numero desejado
+       * @param {number} max - maior numero desejado
+       * @return {int} valor randomico inteiro
+       */
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      /**
+       * Verificamos a colisao entre arcos `a` and `b`.
+       *
+       * @param {Array} vet - Array arc
+       * @param {Array} a - arc data
+       * @param {number} a - qtd quantidade existeste de planetas
+       * @return {bool} valor verdadeiro/falso
+       */
+
+      function checkCollisions(vet, a, qtd) {
+        var colission = false;
+        for (var i = 0; i < qtd - 1; i++) {
+          // desconte o ultimo pois e o proprio `a`
+          console.log(i);
+          var dx = vet[i][1] - a[1];
+          var dy = vet[i][2] - a[2];
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < vet[i][0] + a[0]) {
+            colission = true;
+          }
+        }
+
+        return colission; // verdadeiro ou falso
+      }
+    </script>
+  </head>
+
+  <body onload="init();">
+    <div style="margin: auto; width: max-content">
+      <div><input id="seed" type="text" value="1" onchange="init()" /></div>
+      <canvas
+        id="canvas"
+        width="800"
+        height="800"
+        style="border: 1px solid black; background-color: #000"
+      >
+      </canvas>
+    </div>
+  </body>
+</html>
