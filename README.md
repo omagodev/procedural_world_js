@@ -1,3 +1,5 @@
+![image](https://github.com/AthosVinicius/procedural_world_js/assets/5545297/b2ce4570-90ac-4a1d-9cc8-d4fcf0f47b51)
+
 # Projeto de Geração Procedural de Terreno
 
 Este projeto é uma simulação interativa de um terreno em um mundo 2D. Ele permite que você explore o terreno com um personagem controlável, e pode exibir recursos como nuvens, mudança do céu e diferentes níveis de terreno.
