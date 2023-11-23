@@ -116,8 +116,7 @@ function generateTerrain() {
     }
   }
 
-  // Smoothing step to create rounded edges
-  let smoothFactor = 3; // Adjust this for more or less smoothing
+  let smoothFactor = 3;
   for (let i = 0; i < TERRAIN_WIDTH; i++) {
     let smoothedHeight = 0;
     let count = 0;
