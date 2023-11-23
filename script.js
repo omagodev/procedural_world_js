@@ -115,6 +115,21 @@ function generateTerrain() {
       rightHeight = randomBetween(0, TERRAIN_HEIGHT);
     }
   }
+
+  // Smoothing step to create rounded edges
+  let smoothFactor = 3; // Adjust this for more or less smoothing
+  for (let i = 0; i < TERRAIN_WIDTH; i++) {
+    let smoothedHeight = 0;
+    let count = 0;
+    for (let j = -smoothFactor; j <= smoothFactor; j++) {
+      if (i + j >= 0 && i + j < TERRAIN_WIDTH) {
+        smoothedHeight += terrain[i + j];
+        count++;
+      }
+    }
+    terrain[i] = Math.round(smoothedHeight / count);
+  }
+
   return terrain;
 }
 
