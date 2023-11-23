@@ -4,10 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Geração Procedural</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #terrainCanvas {
+        display: block;
+      }
+    </style>
   </head>
-  <body>
+  <body style="background-color: #000">
     <div style="margin: auto; width: max-content">
-      <div>
+      <div style="color: #fff; padding: 10px">
         <label for="seedInput">Seed: </label>
         <input type="number" id="seedInput" value="0" />
         <button onclick="regenerateTerrain()">Gerar</button>
@@ -15,12 +26,7 @@
         <input type="checkbox" id="toggleSky" />Mostrar Céu
         <input type="checkbox" id="toggleLevel" />Alterar Seed
       </div>
-      <canvas
-        id="terrainCanvas"
-        width="800"
-        height="550"
-        style="border: 1px solid black"
-      ></canvas>
+      <canvas id="terrainCanvas" style="border: 1px solid black"></canvas>
     </div>
 
     <script src="script.js"></script>

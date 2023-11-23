@@ -1,10 +1,10 @@
 const TERRAIN_WIDTH = 100;
 const TERRAIN_HEIGHT = 50;
-const CANVAS_WIDTH = 800;
-const CANVAS_HEIGHT = 550;
 const GRAVITY = 0.5;
-const COLUMN_WIDTH = CANVAS_WIDTH / TERRAIN_WIDTH;
-const COLUMN_HEIGHT = CANVAS_HEIGHT / TERRAIN_HEIGHT;
+let CANVAS_WIDTH = window.innerWidth;
+let CANVAS_HEIGHT = window.innerHeight;
+let COLUMN_WIDTH = CANVAS_WIDTH / TERRAIN_WIDTH;
+let COLUMN_HEIGHT = CANVAS_HEIGHT / TERRAIN_HEIGHT;
 
 const NUM_CLOUDS = 5;
 const CLOUD_MIN_PARTS = 3;
@@ -31,6 +31,18 @@ let character = {
   velocityY: 0,
   velocityX: 0,
 };
+
+function resizeCanvas() {
+  const canvas = document.getElementById("terrainCanvas");
+  CANVAS_WIDTH = window.innerWidth;
+  CANVAS_HEIGHT = window.innerHeight;
+  canvas.width = CANVAS_WIDTH;
+  canvas.height = CANVAS_HEIGHT;
+  COLUMN_WIDTH = CANVAS_WIDTH / TERRAIN_WIDTH;
+  COLUMN_HEIGHT = CANVAS_HEIGHT / TERRAIN_HEIGHT;
+
+  renderTerrainOnCanvas(terrain); // Re-render the terrain to fit the new size
+}
 
 document
   .getElementById("toggleLevel")
@@ -211,6 +223,15 @@ function renderTerrainOnCanvas(terrain) {
       COLUMN_WIDTH,
       height
     );
+
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(
+      i * COLUMN_WIDTH,
+      CANVAS_HEIGHT - height,
+      COLUMN_WIDTH,
+      height
+    );
   }
 
   ctx.fillStyle = "blue";
@@ -223,6 +244,10 @@ function renderTerrainOnCanvas(terrain) {
     2 * Math.PI
   );
   ctx.fill();
+
+  ctx.strokeStyle = "#000000";
+  ctx.lineWidth = 2;
+  ctx.stroke();
 }
 
 function regenerateTerrain() {
@@ -272,6 +297,8 @@ function gameLoop() {
   renderTerrainOnCanvas(terrain);
   requestAnimationFrame(gameLoop);
 }
+window.addEventListener("resize", resizeCanvas);
 
+resizeCanvas();
 regenerateTerrain();
 gameLoop();
